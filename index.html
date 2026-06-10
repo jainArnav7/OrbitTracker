@@ -4,23 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OrbitTracker | Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
     <header>
         <div class="header-top">
             <div class="header-left">
-                <h1>🛸 OrbitTracker Dashboard</h1>
+                <h1>🛸 OrbitTracker</h1>
                 <p id="greeting">Keep pushing forward.</p>
             </div>
+            <div class="header-center">
+                <div class="search-bar">
+                    <input type="text" id="global-search" placeholder="🔍 Search classes, hours...">
+                </div>
+            </div>
             <div class="header-right">
-                <button id="account-btn" class="theme-btn" title="Open Account">👤 My Account</button>
-                <button id="theme-toggle" class="theme-btn" title="Toggle Dark Mode">🌙</button>
-                <button id="logout-btn" class="logout-btn" title="Logout">👋 Logout</button>
+                <button id="theme-toggle" class="header-btn icon-btn" title="Toggle Theme">🌙</button>
+                <button id="stats-btn" class="header-btn icon-btn" title="View Stats">📊</button>
+                <button id="calendar-btn" class="header-btn icon-btn" title="Calendar View">📅</button>
+                <button id="account-btn" class="header-btn text-btn" title="My Account">👤 Account</button>
+                <button id="logout-btn" class="header-btn danger-btn" title="Logout">👋 Logout</button>
             </div>
         </div>
     </header>
+
+    <!-- Modal Windows -->
+    <div id="stats-modal" class="modal hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>📊 Your Statistics</h2>
+            <div id="stats-grid" class="stats-grid">
+                <!-- Stats will populate here -->
+            </div>
+        </div>
+    </div>
+
+    <div id="calendar-modal" class="modal hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>📅 Calendar View</h2>
+            <div id="calendar-container" class="calendar-container">
+                <!-- Calendar will populate here -->
+            </div>
+        </div>
+    </div>
 
     <main class="dashboard-container">
         

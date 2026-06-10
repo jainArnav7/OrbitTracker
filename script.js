@@ -729,5 +729,259 @@ function handleLogout() {
     }
 }
 
+// ===== UNDO/REDO SYSTEM =====
+class UndoRedoManager {
+    constructor() {
+        this.history = [];
+        this.currentIndex = -1;
+    }
+
+    push(state) {
+        this.history = this.history.slice(0, this.currentIndex + 1);
+        this.history.push(JSON.parse(JSON.stringify(state)));
+        this.currentIndex++;
+    }
+
+    undo() {
+        if (this.currentIndex > 0) {
+            this.currentIndex--;
+            return this.history[this.currentIndex];
+        }
+        return null;
+    }
+
+    redo() {
+        if (this.currentIndex < this.history.length - 1) {
+            this.currentIndex++;
+            return this.history[this.currentIndex];
+        }
+        return null;
+    }
+
+    canUndo() {
+        return this.currentIndex > 0;
+    }
+
+    canRedo() {
+        return this.currentIndex < this.history.length - 1;
+    }
+}
+
+let undoRedoManager = new UndoRedoManager();
+
+function saveState() {
+    undoRedoManager.push({
+        classes: dataManager.classes,
+        volunteer: dataManager.volunteer
+    });
+}
+
+// ===== SEARCH & FILTER =====
+function initSearch() {
+    const searchInput = document.getElementById('global-search');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        filterClasses(query);
+        filterVolunteer(query);
+    });
+}
+
+function filterClasses(query) {
+    const items = document.querySelectorAll('#class-list li');
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? '' : 'none';
+    });
+}
+
+function filterVolunteer(query) {
+    const items = document.querySelectorAll('#vol-list li');
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? '' : 'none';
+    });
+}
+
+// ===== STATISTICS DASHBOARD =====
+function showStatsModal() {
+    const modal = document.getElementById('stats-modal');
+    if (!modal) return;
+
+    const statsGrid = document.getElementById('stats-grid');
+    const gpa = dataManager.calculateGPA();
+    const unweightedGPA = dataManager.calculateUnweightedGPA();
+    const totalHours = dataManager.calculateTotalHours();
+    const percent = Math.min((totalHours / dataManager.hoursGoal) * 100, 100);
+
+    statsGrid.innerHTML = `
+        <div class="stats-grid-item">
+            <h3>Weighted GPA</h3>
+            <div class="value">${gpa}</div>
+        </div>
+        <div class="stats-grid-item">
+            <h3>Unweighted GPA</h3>
+            <div class="value">${unweightedGPA}</div>
+        </div>
+        <div class="stats-grid-item">
+            <h3>Total Classes</h3>
+            <div class="value">${dataManager.classes.length}</div>
+        </div>
+        <div class="stats-grid-item">
+            <h3>Total Hours</h3>
+            <div class="value">${totalHours.toFixed(0)}</div>
+        </div>
+        <div class="stats-grid-item">
+            <h3>Goal Progress</h3>
+            <div class="value">${Math.round(percent)}%</div>
+        </div>
+        <div class="stats-grid-item">
+            <h3>Goal Remaining</h3>
+            <div class="value">${Math.max(0, (dataManager.hoursGoal - totalHours).toFixed(0))}</div>
+        </div>
+    `;
+
+    modal.classList.remove('hidden');
+}
+
+// ===== CALENDAR VIEW =====
+function showCalendarModal() {
+    const modal = document.getElementById('calendar-modal');
+    if (!modal) return;
+
+    const container = document.getElementById('calendar-container');
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    const monthName = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    
+    let html = `<h3 style="margin-bottom: 1.5rem; text-align: center;">${monthName}</h3>`;
+    html += '<div class="calendar-grid">';
+
+    // Day headers
+    const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    dayHeaders.forEach(day => {
+        html += `<div class="calendar-day-header">${day}</div>`;
+    });
+
+    // Get first day of month and number of days
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+        html += '<div class="calendar-day disabled"></div>';
+    }
+
+    // Days of month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const isToday = date.toDateString() === today.toDateString();
+        const hasEvents = dataManager.volunteer.some(entry => {
+            const entryDate = new Date(entry.date).toDateString();
+            return entryDate === date.toDateString();
+        });
+
+        const className = `calendar-day ${isToday ? 'today' : ''} ${hasEvents ? 'has-events' : ''}`;
+        html += `<div class="${className}">${day}</div>`;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+    modal.classList.remove('hidden');
+}
+
+// ===== MODAL MANAGEMENT =====
+function setupModals() {
+    const statsBtn = document.getElementById('stats-btn');
+    const calendarBtn = document.getElementById('calendar-btn');
+    const statsModal = document.getElementById('stats-modal');
+    const calendarModal = document.getElementById('calendar-modal');
+    const modals = document.querySelectorAll('.modal');
+
+    if (statsBtn) statsBtn.addEventListener('click', showStatsModal);
+    if (calendarBtn) calendarBtn.addEventListener('click', showCalendarModal);
+
+    modals.forEach(modal => {
+        const closeBtn = modal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+        }
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.add('hidden');
+        });
+    });
+}
+
+// ===== KEYBOARD SHORTCUTS =====
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Ctrl+Z or Cmd+Z for undo
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+            e.preventDefault();
+            console.log('Undo functionality can be expanded');
+        }
+        // Ctrl+Shift+Z or Cmd+Shift+Z for redo
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z') {
+            e.preventDefault();
+            console.log('Redo functionality can be expanded');
+        }
+        // Ctrl+E or Cmd+E for export
+        if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+            e.preventDefault();
+            handleExportCSV();
+        }
+    });
+}
+
+// ===== ENHANCED INITIALIZATION =====
+function enhancedInit() {
+    init();
+    initSearch();
+    setupModals();
+    setupKeyboardShortcuts();
+    
+    // Add keyboard shortcuts info
+    if (classForm) classForm.addEventListener('submit', saveState);
+    if (volunteerForm) volunteerForm.addEventListener('submit', saveState);
+}
+
+// ===== GOAL NOTIFICATIONS =====
+function checkGoalNotifications() {
+    const total = dataManager.calculateTotalHours();
+    const goal = dataManager.hoursGoal;
+    
+    if (total >= goal && !localStorage.getItem('goal_notification_shown')) {
+        showNotification('🎉 Congratulations! You\'ve reached your volunteer goal!', 'success');
+        localStorage.setItem('goal_notification_shown', 'true');
+    } else if (total < goal) {
+        localStorage.removeItem('goal_notification_shown');
+    }
+}
+
+// ===== MOBILE RESPONSIVENESS ENHANCEMENTS =====
+function setupResponsive() {
+    // Detect if on mobile and adjust UI
+    const isMobile = () => window.innerWidth < 768;
+    
+    if (isMobile()) {
+        document.body.classList.add('mobile');
+    }
+    
+    window.addEventListener('resize', () => {
+        if (isMobile()) {
+            document.body.classList.add('mobile');
+        } else {
+            document.body.classList.remove('mobile');
+        }
+    });
+}
+
 // ===== START APPLICATION =====
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    enhancedInit();
+    setupResponsive();
+    setInterval(checkGoalNotifications, 5000);
+});
