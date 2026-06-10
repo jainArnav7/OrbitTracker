@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrbitTracker | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="header-left">
+                <h1>🛸 OrbitTracker Dashboard</h1>
+                <p id="greeting">Keep pushing forward.</p>
+            </div>
+            <div class="header-right">
+                <button id="account-btn" class="theme-btn" title="Open Account">👤 My Account</button>
+                <button id="theme-toggle" class="theme-btn" title="Toggle Dark Mode">🌙</button>
+                <button id="logout-btn" class="logout-btn" title="Logout">👋 Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        
+        <!-- SECTION 1: GPA & CLASS TRACKER -->
+        <section class="tracker-card" id="gpa-section">
+            <h2>📚 Academic Course Tracker</h2>
+            
+            <!-- Input Form -->
+            <form id="class-form">
+                <div class="form-row">
+                    <input type="text" id="class-name" placeholder="Class Name (e.g., Honors Chemistry)" required>
+                    <select id="class-grade" required>
+                        <option value="" disabled selected>Grade</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="class-weighted"> Weighted Class (*)
+                    </label>
+                    <button type="submit" class="btn-primary">Add Class</button>
+                </div>
+            </form>
+
+            <!-- Display Results -->
+            <div class="stats-box">
+                <div class="stat-card">
+                    <h3>Weighted GPA</h3>
+                    <p class="stat-value"><span id="weighted-gpa">0.00</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Normal GPA</h3>
+                    <p class="stat-value"><span id="unweighted-gpa">0.00</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Classes</h3>
+                    <p class="stat-value"><span id="total-classes">0</span></p>
+                </div>
+            </div>
+
+            <!-- Target GPA Calculator -->
+            <details class="target-gpa-section">
+                <summary>📊 Target GPA Calculator</summary>
+                <div class="target-gpa-form">
+                    <div class="form-row">
+                        <input type="number" id="current-gpa" placeholder="Current GPA" min="0" max="5" step="0.01">
+                        <input type="number" id="current-credits" placeholder="Current Credits" min="0" step="1">
+                    </div>
+                    <div class="form-row">
+                        <input type="number" id="target-gpa" placeholder="Target Graduation GPA" min="0" max="5" step="0.01">
+                        <input type="number" id="target-credits" placeholder="Target Credits at Graduation" min="0" step="1">
+                    </div>
+                    <button type="button" id="calc-target-btn" class="btn-secondary">Calculate Required GPA</button>
+                    <p id="target-result" class="target-result"></p>
+                </div>
+            </details>
+
+            <!-- Class List -->
+            <div class="list-container">
+                <ul id="class-list" class="item-list">
+                    <!-- JavaScript will populate classes here -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 2: VOLUNTEER HOURS TRACKER -->
+        <section class="tracker-card" id="volunteer-section">
+            <h2>🤝 Volunteer Hour Log</h2>
+            
+            <!-- Input Form -->
+            <form id="volunteer-form">
+                <div class="form-row">
+                    <input type="text" id="vol-org" placeholder="Organization / Event" required>
+                    <select id="vol-category">
+                        <option value="Volunteering">Volunteering</option>
+                        <option value="Community Service">Community Service</option>
+                        <option value="Church/Religious">Church/Religious</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Club">Club</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Personal Project">Personal Project</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="number" id="vol-hours" placeholder="Hours" min="0.5" step="0.5" required>
+                    <button type="submit" class="btn-primary">Log Hours</button>
+                </div>
+            </form>
+
+            <!-- Display Results -->
+            <div class="stats-box">
+                <div class="stat-card">
+                    <h3>Total Hours</h3>
+                    <p class="stat-value"><span id="total-hours">0</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Goal Progress</h3>
+                    <p class="stat-value"><span id="hours-percent">0</span>%</p>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <label for="hours-goal">Goal: </label>
+                    <input type="number" id="hours-goal" placeholder="Set a goal (e.g., 100)" min="1" value="100">
+                    <button type="button" id="set-goal-btn" class="btn-secondary">Update Goal</button>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="hours-progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="progress-text"><span id="hours-logged">0</span> / <span id="hours-target">100</span> hours</p>
+                </div>
+            </div>
+
+            <!-- Category Breakdown -->
+            <details class="category-breakdown">
+                <summary>📈 Hours by Category</summary>
+                <div id="category-stats" class="category-stats">
+                    <!-- JavaScript will populate category breakdown -->
+                </div>
+            </details>
+
+            <!-- Volunteer List -->
+            <div class="list-container">
+                <ul id="vol-list" class="item-list">
+                    <!-- JavaScript will populate volunteer hours here -->
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Hidden file input for restore -->
+    <input type="file" id="restore-file" accept=".json" style="display: none;">
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

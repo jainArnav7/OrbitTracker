@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrbitTracker | Login</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Logo/Branding -->
+            <div class="auth-header">
+                <div class="auth-logo">🛸</div>
+                <h1>OrbitTracker</h1>
+                <p>Track your academic journey and achievements</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        placeholder="you@example.com" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input 
+                        type="password" 
+                        id="login-password" 
+                        placeholder="••••••••" 
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-login">Sign In</button>
+            </form>
+
+            <!-- Divider -->
+            <div class="divider">or</div>
+
+            <!-- Demo Login -->
+            <button type="button" id="demo-login-btn" class="btn-demo">
+                🎯 Try Demo Account
+            </button>
+
+            <!-- Signup Link -->
+            <p class="auth-footer">
+                Don't have an account? 
+                <a href="signup.html" class="auth-link">Create one now</a>
+            </p>
+        </div>
+
+        <!-- Background Elements -->
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

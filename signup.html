@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrbitTracker | Sign Up</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Logo/Branding -->
+            <div class="auth-header">
+                <div class="auth-logo">🛸</div>
+                <h1>Join OrbitTracker</h1>
+                <p>Start tracking your academic achievements today</p>
+            </div>
+
+            <!-- Signup Form -->
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="signup-name" 
+                        placeholder="Your name" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="signup-email" 
+                        placeholder="you@example.com" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input 
+                        type="password" 
+                        id="signup-password" 
+                        placeholder="••••••••" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-confirm">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="signup-confirm" 
+                        placeholder="••••••••" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-state">State</label>
+                    <select id="signup-state" required>
+                        <option value="" disabled selected>Select your state</option>
+                        <option value="Alabama">Alabama</option>
+                        <option value="Alaska">Alaska</option>
+                        <option value="Arizona">Arizona</option>
+                        <option value="Arkansas">Arkansas</option>
+                        <option value="California">California</option>
+                        <option value="Colorado">Colorado</option>
+                        <option value="Connecticut">Connecticut</option>
+                        <option value="Delaware">Delaware</option>
+                        <option value="Florida">Florida</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Hawaii">Hawaii</option>
+                        <option value="Idaho">Idaho</option>
+                        <option value="Illinois">Illinois</option>
+                        <option value="Indiana">Indiana</option>
+                        <option value="Iowa">Iowa</option>
+                        <option value="Kansas">Kansas</option>
+                        <option value="Kentucky">Kentucky</option>
+                        <option value="Louisiana">Louisiana</option>
+                        <option value="Maine">Maine</option>
+                        <option value="Maryland">Maryland</option>
+                        <option value="Massachusetts">Massachusetts</option>
+                        <option value="Michigan">Michigan</option>
+                        <option value="Minnesota">Minnesota</option>
+                        <option value="Mississippi">Mississippi</option>
+                        <option value="Missouri">Missouri</option>
+                        <option value="Montana">Montana</option>
+                        <option value="Nebraska">Nebraska</option>
+                        <option value="Nevada">Nevada</option>
+                        <option value="New Hampshire">New Hampshire</option>
+                        <option value="New Jersey">New Jersey</option>
+                        <option value="New Mexico">New Mexico</option>
+                        <option value="New York">New York</option>
+                        <option value="North Carolina">North Carolina</option>
+                        <option value="North Dakota">North Dakota</option>
+                        <option value="Ohio">Ohio</option>
+                        <option value="Oklahoma">Oklahoma</option>
+                        <option value="Oregon">Oregon</option>
+                        <option value="Pennsylvania">Pennsylvania</option>
+                        <option value="Rhode Island">Rhode Island</option>
+                        <option value="South Carolina">South Carolina</option>
+                        <option value="South Dakota">South Dakota</option>
+                        <option value="Tennessee">Tennessee</option>
+                        <option value="Texas">Texas</option>
+                        <option value="Utah">Utah</option>
+                        <option value="Vermont">Vermont</option>
+                        <option value="Virginia">Virginia</option>
+                        <option value="Washington">Washington</option>
+                        <option value="West Virginia">West Virginia</option>
+                        <option value="Wisconsin">Wisconsin</option>
+                        <option value="Wyoming">Wyoming</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="signup-agree" required>
+                    <label for="signup-agree">
+                        I agree to the Terms of Service
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-login">Create Account</button>
+            </form>
+
+            <!-- Divider -->
+            <div class="divider">or</div>
+
+            <!-- Login Link -->
+            <p class="auth-footer">
+                Already have an account? 
+                <a href="login.html" class="auth-link">Sign in here</a>
+            </p>
+        </div>
+
+        <!-- Background Elements -->
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrbitTracker | My Account</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="header-left">
+                <h1>🛸 OrbitTracker Account</h1>
+                <p id="greeting">Manage your profile and settings here.</p>
+            </div>
+            <div class="header-right">
+                <button id="dashboard-btn" class="theme-btn" title="Back to Dashboard">🏠 Dashboard</button>
+                <button id="theme-toggle" class="theme-btn" title="Toggle Dark Mode">🌙</button>
+                <button id="logout-btn" class="logout-btn" title="Logout">👋 Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="tracker-card">
+            <h2>👤 Account Overview</h2>
+            <div class="account-grid">
+                <div class="tracker-card account-panel">
+                    <h3>Profile</h3>
+                    <p><strong>Name:</strong> <span id="account-name">Loading...</span></p>
+                    <p><strong>Email:</strong> <span id="account-email">Loading...</span></p>
+                    <p><strong>State:</strong> <span id="account-state">Loading...</span></p>
+                    <p><strong>Grade Scale:</strong> <span id="account-scale">Loading...</span></p>
+                </div>
+
+                <div class="tracker-card account-panel">
+                    <h3>Settings</h3>
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label for="settings-state">State</label>
+                            <select id="settings-state" required>
+                                <option value="" disabled>Select your state</option>
+                                <option value="Alabama">Alabama</option>
+                                <option value="Alaska">Alaska</option>
+                                <option value="Arizona">Arizona</option>
+                                <option value="Arkansas">Arkansas</option>
+                                <option value="California">California</option>
+                                <option value="Colorado">Colorado</option>
+                                <option value="Connecticut">Connecticut</option>
+                                <option value="Delaware">Delaware</option>
+                                <option value="Florida">Florida</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Hawaii">Hawaii</option>
+                                <option value="Idaho">Idaho</option>
+                                <option value="Illinois">Illinois</option>
+                                <option value="Indiana">Indiana</option>
+                                <option value="Iowa">Iowa</option>
+                                <option value="Kansas">Kansas</option>
+                                <option value="Kentucky">Kentucky</option>
+                                <option value="Louisiana">Louisiana</option>
+                                <option value="Maine">Maine</option>
+                                <option value="Maryland">Maryland</option>
+                                <option value="Massachusetts">Massachusetts</option>
+                                <option value="Michigan">Michigan</option>
+                                <option value="Minnesota">Minnesota</option>
+                                <option value="Mississippi">Mississippi</option>
+                                <option value="Missouri">Missouri</option>
+                                <option value="Montana">Montana</option>
+                                <option value="Nebraska">Nebraska</option>
+                                <option value="Nevada">Nevada</option>
+                                <option value="New Hampshire">New Hampshire</option>
+                                <option value="New Jersey">New Jersey</option>
+                                <option value="New Mexico">New Mexico</option>
+                                <option value="New York">New York</option>
+                                <option value="North Carolina">North Carolina</option>
+                                <option value="North Dakota">North Dakota</option>
+                                <option value="Ohio">Ohio</option>
+                                <option value="Oklahoma">Oklahoma</option>
+                                <option value="Oregon">Oregon</option>
+                                <option value="Pennsylvania">Pennsylvania</option>
+                                <option value="Rhode Island">Rhode Island</option>
+                                <option value="South Carolina">South Carolina</option>
+                                <option value="South Dakota">South Dakota</option>
+                                <option value="Tennessee">Tennessee</option>
+                                <option value="Texas">Texas</option>
+                                <option value="Utah">Utah</option>
+                                <option value="Vermont">Vermont</option>
+                                <option value="Virginia">Virginia</option>
+                                <option value="Washington">Washington</option>
+                                <option value="West Virginia">West Virginia</option>
+                                <option value="Wisconsin">Wisconsin</option>
+                                <option value="Wyoming">Wyoming</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grading-scale">Grading Scale</label>
+                            <select id="grading-scale">
+                                <option value="4.0 Scale">4.0 Scale</option>
+                                <option value="4.3 Scale">4.3 Scale</option>
+                                <option value="5.0 Scale">5.0 Scale</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="custom-a">Custom A Value</label>
+                            <input type="number" id="custom-a" placeholder="Leave blank to use preset" step="0.1" min="0" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="custom-b">Custom B Value</label>
+                            <input type="number" id="custom-b" placeholder="Leave blank to use preset" step="0.1" min="0" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="custom-c">Custom C Value</label>
+                            <input type="number" id="custom-c" placeholder="Leave blank to use preset" step="0.1" min="0" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="custom-d">Custom D Value</label>
+                            <input type="number" id="custom-d" placeholder="Leave blank to use preset" step="0.1" min="0" max="10">
+                        </div>
+
+                        <button type="submit" class="btn-primary">Save Settings</button>
+                        <p id="settings-note" class="settings-note">Your state determines the default grading scale; you can customize it here.</p>
+                    </form>
+                </div>
+
+                <div class="tracker-card account-panel">
+                    <h3>Data Management</h3>
+                    <div class="data-buttons">
+                        <button id="export-csv-btn" class="btn-secondary">📥 Export to CSV</button>
+                        <button id="backup-data-btn" class="btn-secondary">💾 Backup Data (JSON)</button>
+                        <button id="restore-data-btn" class="btn-secondary">📂 Restore Data</button>
+                        <button id="clear-all-btn" class="btn-danger">🗑️ Clear My Data</button>
+                    </div>
+                    <textarea id="backup-text" class="backup-textarea" placeholder="Your backup data will appear here" readonly></textarea>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <input type="file" id="restore-file" accept=".json" style="display: none;">
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
