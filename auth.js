@@ -65,6 +65,7 @@ class AuthManager {
             name,
             email,
             state,
+            createdAt: newUser.createdAt,
             settings: newUser.settings
         };
         this.saveCurrentUserToStorage();
@@ -90,6 +91,7 @@ class AuthManager {
             name: user.name,
             email: user.email,
             state: user.state || 'Unknown',
+            createdAt: user.createdAt || new Date().toISOString(),
             settings: user.settings || {
                 gradingScaleName: this.getGradeScaleNameForState(user.state || 'Unknown'),
                 customScale: null
@@ -107,6 +109,7 @@ class AuthManager {
             name: 'Demo User',
             email: 'demo@orbittracker.com',
             state: 'Demo',
+            createdAt: new Date().toISOString(),
             settings: {
                 gradingScaleName: '4.0 Scale',
                 customScale: null
@@ -122,7 +125,7 @@ class AuthManager {
                 state: 'Demo',
                 settings: demoUser.settings,
                 password: this.hashPassword('demo123'),
-                createdAt: new Date().toISOString()
+                createdAt: demoUser.createdAt
             });
             this.saveUsersToStorage();
         }

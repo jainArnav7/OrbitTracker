@@ -15,9 +15,9 @@
                 <p id="greeting">Manage your profile and settings here.</p>
             </div>
             <div class="header-right">
-                <button id="dashboard-btn" class="theme-btn" title="Back to Dashboard">🏠 Dashboard</button>
-                <button id="theme-toggle" class="theme-btn" title="Toggle Dark Mode">🌙</button>
-                <button id="logout-btn" class="logout-btn" title="Logout">👋 Logout</button>
+                <button id="dashboard-btn" class="header-btn text-btn" title="Back to Dashboard">🏠 Dashboard</button>
+                <button id="theme-toggle" class="header-btn icon-btn" title="Toggle Dark Mode">🌙</button>
+                <button id="logout-btn" class="header-btn text-btn danger-btn" title="Logout">👋 Logout</button>
             </div>
         </div>
     </header>
@@ -28,10 +28,16 @@
             <div class="account-grid">
                 <div class="tracker-card account-panel">
                     <h3>Profile</h3>
+                    <div class="profile-picture-section">
+                        <img id="profile-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233b82f6'/%3E%3Ccircle cx='50' cy='35' r='15' fill='white'/%3E%3Cpath d='M 30 60 Q 30 50 50 50 Q 70 50 70 60 L 70 75 Q 70 75 50 75 Q 30 75 30 60' fill='white'/%3E%3C/svg%3E" alt="Profile Picture" class="profile-img">
+                        <button id="upload-profile-btn" class="btn-secondary">📷 Upload Picture</button>
+                        <input type="file" id="profile-file-input" accept="image/*" style="display: none;">
+                    </div>
                     <p><strong>Name:</strong> <span id="account-name">Loading...</span></p>
                     <p><strong>Email:</strong> <span id="account-email">Loading...</span></p>
                     <p><strong>State:</strong> <span id="account-state">Loading...</span></p>
                     <p><strong>Grade Scale:</strong> <span id="account-scale">Loading...</span></p>
+                    <p><strong>Member Since:</strong> <span id="account-created">Loading...</span></p>
                 </div>
 
                 <div class="tracker-card account-panel">
@@ -127,7 +133,83 @@
                 </div>
 
                 <div class="tracker-card account-panel">
-                    <h3>Data Management</h3>
+                    <h3>🔔 Notification Preferences</h3>
+                    <form id="notifications-form">
+                        <div class="form-group checkbox-group">
+                            <label for="notif-goals">
+                                <input type="checkbox" id="notif-goals" checked>
+                                Goal Reminders
+                            </label>
+                            <p class="form-hint">Get reminded when you're close to reaching your goals</p>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label for="notif-gpa">
+                                <input type="checkbox" id="notif-gpa" checked>
+                                GPA Milestones
+                            </label>
+                            <p class="form-hint">Notifications when you reach new GPA levels</p>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label for="notif-email">
+                                <input type="checkbox" id="notif-email">
+                                Email Notifications
+                            </label>
+                            <p class="form-hint">Receive important updates via email</p>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label for="notif-updates">
+                                <input type="checkbox" id="notif-updates">
+                                App Updates
+                            </label>
+                            <p class="form-hint">Get notified about new features and improvements</p>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Save Preferences</button>
+                    </form>
+                </div>
+
+                <div class="tracker-card account-panel">
+                    <h3>🔒 Privacy Settings</h3>
+                    <form id="privacy-form">
+                        <div class="form-group checkbox-group">
+                            <label for="privacy-profile">
+                                <input type="checkbox" id="privacy-profile" checked>
+                                Public Profile
+                            </label>
+                            <p class="form-hint">Allow others to view your profile</p>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label for="privacy-data">
+                                <input type="checkbox" id="privacy-data" checked>
+                                Data Collection
+                            </label>
+                            <p class="form-hint">Help us improve by sharing anonymous usage data</p>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label for="privacy-analytics">
+                                <input type="checkbox" id="privacy-analytics">
+                                Analytics Tracking
+                            </label>
+                            <p class="form-hint">Allow analytics to track your app usage patterns</p>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Save Privacy Settings</button>
+                    </form>
+
+                    <div class="danger-zone" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--card-border);">
+                        <h4 style="color: var(--color-danger); margin-bottom: 1rem;">⚠️ Danger Zone</h4>
+                        <button id="delete-account-btn" class="btn-danger">🗑️ Delete My Account</button>
+                        <p class="form-hint" style="color: var(--text-tertiary); margin-top: 0.5rem;">This action is permanent and cannot be undone.</p>
+                    </div>
+                </div>
+
+                <div class="tracker-card account-panel">
+                    <h3>📊 Data Management</h3>
                     <div class="data-buttons">
                         <button id="export-csv-btn" class="btn-secondary">📥 Export to CSV</button>
                         <button id="backup-data-btn" class="btn-secondary">💾 Backup Data (JSON)</button>

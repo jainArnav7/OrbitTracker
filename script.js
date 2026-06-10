@@ -269,6 +269,14 @@ const customDInput = document.getElementById('custom-d');
 const settingsNote = document.getElementById('settings-note');
 const unweightedGpaSpan = document.getElementById('unweighted-gpa');
 
+// ===== NEW ACCOUNT FEATURES =====
+const uploadProfileBtn = document.getElementById('upload-profile-btn');
+const profileFileInput = document.getElementById('profile-file-input');
+const profileAvatar = document.getElementById('profile-avatar');
+const notificationsForm = document.getElementById('notifications-form');
+const privacyForm = document.getElementById('privacy-form');
+const deleteAccountBtn = document.getElementById('delete-account-btn');
+
 // ===== INITIALIZATION =====
 function init() {
     if (!checkAuth()) return;
@@ -299,6 +307,18 @@ function init() {
     if (restoreDataBtn) restoreDataBtn.addEventListener('click', () => restoreFile.click());
     if (restoreFile) restoreFile.addEventListener('change', handleRestoreData);
     if (clearAllBtn) clearAllBtn.addEventListener('click', handleClearAll);
+    
+    // ===== NEW ACCOUNT FEATURES =====
+    if (uploadProfileBtn) uploadProfileBtn.addEventListener('click', () => profileFileInput?.click());
+    if (profileFileInput) profileFileInput.addEventListener('change', handleProfileUpload);
+    if (notificationsForm) notificationsForm.addEventListener('submit', handleSaveNotifications);
+    if (privacyForm) privacyForm.addEventListener('submit', handleSavePrivacy);
+    if (deleteAccountBtn) deleteAccountBtn.addEventListener('click', handleDeleteAccount);
+    
+    // Load saved preferences
+    loadNotificationPreferences();
+    loadPrivacyPreferences();
+    loadProfilePicture();
 }
 
 // ===== CLASS MANAGEMENT =====
@@ -575,6 +595,17 @@ function populateSettingsForm() {
     accountEmailSpan && (accountEmailSpan.textContent = currentUser.email);
     accountStateSpan && (accountStateSpan.textContent = currentUser.state || 'Not set');
     accountScaleSpan && (accountScaleSpan.textContent = (currentUser.settings && currentUser.settings.gradingScaleName) || '4.0 Scale');
+    
+    // Display account creation date
+    const accountCreatedSpan = document.getElementById('account-created');
+    if (accountCreatedSpan && currentUser.createdAt) {
+        const createdDate = new Date(currentUser.createdAt).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        accountCreatedSpan.textContent = createdDate;
+    }
 
     if (settingsStateSelect) {
         settingsStateSelect.value = currentUser.state || '';
@@ -595,6 +626,153 @@ function renderAccountInfo() {
     accountEmailSpan && (accountEmailSpan.textContent = currentUser.email);
     accountStateSpan && (accountStateSpan.textContent = currentUser.state || 'Not set');
     accountScaleSpan && (accountScaleSpan.textContent = currentUser.settings?.gradingScaleName || '4.0 Scale');
+    
+    // Display account creation date
+    const accountCreatedSpan = document.getElementById('account-created');
+    if (accountCreatedSpan && currentUser.createdAt) {
+        const createdDate = new Date(currentUser.createdAt).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        accountCreatedSpan.textContent = createdDate;
+    }
+}
+
+// ===== NEW ACCOUNT FEATURES HANDLERS =====
+
+// Profile Picture Upload
+function handleProfileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (!file.type.startsWith('image/')) {
+        showNotification('Please select a valid image file', 'error');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const imageData = event.target.result;
+        // Save to localStorage
+        const currentUser = getCurrentUser();
+        localStorage.setItem(`orbittracker_profile_pic_${currentUser.id}`, imageData);
+        
+        // Update the profile image
+        profileAvatar && (profileAvatar.src = imageData);
+        showNotification('Profile picture updated!');
+    };
+    
+    reader.readAsDataURL(file);
+}
+
+function loadProfilePicture() {
+    const currentUser = getCurrentUser();
+    if (!currentUser || !profileAvatar) return;
+    
+    const savedPic = localStorage.getItem(`orbittracker_profile_pic_${currentUser.id}`);
+    if (savedPic) {
+        profileAvatar.src = savedPic;
+    }
+}
+
+// Notification Preferences
+function handleSaveNotifications(e) {
+    e.preventDefault();
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    const prefs = {
+        goals: document.getElementById('notif-goals')?.checked || false,
+        gpa: document.getElementById('notif-gpa')?.checked || false,
+        email: document.getElementById('notif-email')?.checked || false,
+        updates: document.getElementById('notif-updates')?.checked || false
+    };
+    
+    localStorage.setItem(`orbittracker_notif_prefs_${currentUser.id}`, JSON.stringify(prefs));
+    showNotification('Notification preferences saved!');
+}
+
+function loadNotificationPreferences() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    const savedPrefs = localStorage.getItem(`orbittracker_notif_prefs_${currentUser.id}`);
+    if (savedPrefs) {
+        const prefs = JSON.parse(savedPrefs);
+        document.getElementById('notif-goals') && (document.getElementById('notif-goals').checked = prefs.goals);
+        document.getElementById('notif-gpa') && (document.getElementById('notif-gpa').checked = prefs.gpa);
+        document.getElementById('notif-email') && (document.getElementById('notif-email').checked = prefs.email);
+        document.getElementById('notif-updates') && (document.getElementById('notif-updates').checked = prefs.updates);
+    }
+}
+
+// Privacy Settings
+function handleSavePrivacy(e) {
+    e.preventDefault();
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    const prefs = {
+        publicProfile: document.getElementById('privacy-profile')?.checked || false,
+        dataCollection: document.getElementById('privacy-data')?.checked || false,
+        analyticsTracking: document.getElementById('privacy-analytics')?.checked || false
+    };
+    
+    localStorage.setItem(`orbittracker_privacy_prefs_${currentUser.id}`, JSON.stringify(prefs));
+    showNotification('Privacy settings saved!');
+}
+
+function loadPrivacyPreferences() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    const savedPrefs = localStorage.getItem(`orbittracker_privacy_prefs_${currentUser.id}`);
+    if (savedPrefs) {
+        const prefs = JSON.parse(savedPrefs);
+        document.getElementById('privacy-profile') && (document.getElementById('privacy-profile').checked = prefs.publicProfile);
+        document.getElementById('privacy-data') && (document.getElementById('privacy-data').checked = prefs.dataCollection);
+        document.getElementById('privacy-analytics') && (document.getElementById('privacy-analytics').checked = prefs.analyticsTracking);
+    } else {
+        // Set defaults
+        document.getElementById('privacy-profile') && (document.getElementById('privacy-profile').checked = true);
+        document.getElementById('privacy-data') && (document.getElementById('privacy-data').checked = true);
+    }
+}
+
+// Delete Account
+function handleDeleteAccount() {
+    const confirmed = confirm('⚠️ Are you sure you want to delete your account? This action cannot be undone!');
+    if (!confirmed) return;
+    
+    const doubleConfirmed = confirm('This will permanently delete your account and all associated data. Type your understanding to confirm.');
+    if (!doubleConfirmed) return;
+    
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+    
+    // Delete from auth manager if available
+    if (window.authManager) {
+        const userIndex = authManager.users.findIndex(u => u.id === currentUser.id);
+        if (userIndex > -1) {
+            authManager.users.splice(userIndex, 1);
+            authManager.saveUsersToStorage();
+        }
+    }
+    
+    // Clear user data
+    dataManager.clearAll();
+    
+    // Clear user-specific storage
+    localStorage.removeItem('orbittracker_current_user');
+    localStorage.removeItem(`orbittracker_notif_prefs_${currentUser.id}`);
+    localStorage.removeItem(`orbittracker_privacy_prefs_${currentUser.id}`);
+    localStorage.removeItem(`orbittracker_profile_pic_${currentUser.id}`);
+    
+    showNotification('Account deleted. Redirecting to login...');
+    setTimeout(() => {
+        window.location.href = 'login.html';
+    }, 1500);
 }
 
 // ===== THEME MANAGEMENT =====
